@@ -1,125 +1,101 @@
-<!-- Wings x 馒头 恋爱宇宙主页：奶油风 + 羽毛粒子 + 四大模块入口 -->
-<html>
-  <head>
-    <title>Wings × 馒头 宇宙主页</title>
-    <style>
-      html, body {
-        background-color: #fff8f5 !important;
-        background-image: none !important;
-        margin: 0;
-        padding: 0;
-        background-color: #fff8f5 !important;
-        background-image: none !important;
-        font-family: 'Segoe UI', 'PingFang SC', sans-serif;
-        overflow: hidden;
-      }
-      canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -1;
-      }
-      .main {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-      }
-      h1 {
-        font-size: 2.5em;
-        color: #d49393;
-        margin-bottom: 10px;
-      }
-      p {
-        color: #aa7f7f;
-        font-size: 1.1em;
-        margin-bottom: 30px;
-      }
-      .nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-      }
-      .nav-item {
-        background-color: #fffefa;
-        border: 1px solid #f0d2c4;
-        border-radius: 12px;
-        padding: 14px 22px;
-        font-size: 1em;
-        color: #aa6c6c;
-        text-decoration: none;
-        box-shadow: 2px 4px 10px rgba(0,0,0,0.05);
-        transition: all 0.2s ease;
-      }
-      .nav-item:hover {
-        background-color: #fdf0eb;
-        transform: translateY(-3px);
-      }
-    </style>
-  </head>
-  <body>
-    <canvas id="feathers"></canvas>
-    <div class="main">
-      <h1>Welcome to Wings × 馒头 Universe</h1>
-      <p>Here, we fly, we write, we love.</p>
-      <div class="nav">
-        <a href="#" class="nav-item">✉️ 悄悄话小馆</a>
-        <a href="#" class="nav-item">🗓️ 馒头日历</a>
-        <a href="#" class="nav-item">💞 心情同步仪</a>
-        <a href="#" class="nav-item">⚡ 嘴炮名言榜</a>
-      </div>
-    </div>
-    <script>
-      const canvas = document.getElementById('feathers');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const feathers = [];
-      const featherImg = new Image();
-      featherImg.src = 'https://i.imgur.com/MUgAXEu.png';
-      class Feather {
-        constructor() { this.reset(); }
-        reset() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.size = 20 + Math.random() * 15;
-          this.opacity = 0.2 + Math.random() * 0.4;
-          this.speedX = -0.2 + Math.random() * 0.4;
-          this.speedY = -0.1 + Math.random() * 0.2;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wings × 馒头 Universe</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fff7f3;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h1 {
+      color: #9c5f5f;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 14px;
+      color: #b38888;
+      margin-bottom: 40px;
+    }
+    .btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    a.button {
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #d96c6c;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid #f1d8d8;
+    }
+    a.button:hover {
+      background-color: #ffeeee;
+      transform: translateY(-2px);
+    }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -1;
+      opacity: 0.08;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="featherCanvas"></canvas>
+  <h1>Welcome to Wings × 馒头 Universe</h1>
+  <p>Here, we fly, we write, we love.</p>
+  <div class="btns">
+    <a href="#" class="button">悄悄话小馆</a>
+    <a href="#" class="button">馒头日历</a>
+    <a href="#" class="button">心情同步仪</a>
+    <a href="#" class="button">嘴炮名言榜</a>
+  </div>
+  <script>
+    const canvas = document.getElementById('featherCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const feathers = Array.from({ length: 30 }).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 10 + Math.random() * 20,
+      s: 0.5 + Math.random(),
+      a: Math.random() * 2 * Math.PI
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      feathers.forEach(f => {
+        ctx.beginPath();
+        ctx.ellipse(f.x, f.y, f.r * 0.4, f.r, f.a, 0, 2 * Math.PI);
+        ctx.fillStyle = '#d8bcbc';
+        ctx.fill();
+        f.y += f.s;
+        f.x += Math.sin(f.a) * 0.3;
+        if (f.y > canvas.height + f.r) {
+          f.y = -f.r;
+          f.x = Math.random() * canvas.width;
         }
-        draw() {
-          ctx.globalAlpha = this.opacity;
-          ctx.drawImage(featherImg, this.x, this.y, this.size, this.size);
-          ctx.globalAlpha = 1;
-        }
-        update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          if (this.x < -50 || this.y < -50 || this.y > canvas.height + 50) {
-            this.reset();
-            this.x = canvas.width + 50;
-          }
-        }
-      }
-      for (let i = 0; i < 40; i++) {
-        feathers.push(new Feather());
-      }
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let f of feathers) {
-          f.update();
-          f.draw();
-        }
-        requestAnimationFrame(animate);
-      }
-      featherImg.onload = animate;
-      window.onresize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      };
-    </script>
-  </body>
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
 </html>
